@@ -21,23 +21,27 @@ class Player:
         self.flap = False
 
     def jump(self):
+        self.flap = True
         self.vel = -10.5
         self.tick_count = 0
         self.height = self.y
 
-    def move(self):
+    def move(self, user_input):
         self.tick_count += 1
 
-        d = self.vel * self.tick_count + 1.5 * self.tick_count ** 2
+        self.vel += 0.5
 
-        if d >= 16:
-            d = 16
+        if self.vel >= 16:
+            self.vel = 16
+        if self.y < 1000:
+            self.y += int(self.vel)
+            if self.vel == -2:
+                self.flap = False
 
-        print(d)
-        if d < 0:
-            d -= 20
+        if user_input[pygame.K_SPACE] and not self.flap and self.y > 0:
+            self.jump()
 
-        self.y = self.y + d
+
 
     def draw(self, win):
         """
@@ -46,6 +50,6 @@ class Player:
         :return: None
         """
 
-        pygame.draw.circle(win, BLACK, (self.x, self.y), 50)
+        pygame.draw.circle(win, BLACK, (self.x, self.y), 25)
 
 

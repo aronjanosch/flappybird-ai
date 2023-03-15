@@ -11,7 +11,6 @@ WHITE = (255, 255, 255)
 
 class Pipe:
     VEL = 5
-    GAP = 250
 
     def __init__(self, x):
         self.x = x
@@ -19,6 +18,7 @@ class Pipe:
         self.width = 50
         self.top = 0
         self.bottom = 0
+        self.gap = 150
 
         self.passed = False
 
@@ -26,7 +26,9 @@ class Pipe:
 
     def set_height(self):
         self.height = random.randrange(50, 450)
-        self.bottom = self.height+self.GAP
+        self.gap = random.randrange(150, 200)
+        self.bottom = self.height+self.gap
+
 
     def move(self):
         self.x -= self.VEL

@@ -7,7 +7,7 @@ from player import Player
 from pipe import Pipe
 
 
-FPS = 30
+FPS = 45
 
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -34,7 +34,7 @@ def draw_window(win: pygame.Surface, player, pipes):
 
 
 def main():
-    player = Player(200, 200)
+    player = Player(150, 200)
     pipes = [Pipe(700)]
     win = pygame.display.set_mode((500, 800))
     clock = pygame.time.Clock()
@@ -44,9 +44,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
-                player.jump()
-        player.move()
+
+        user_input = pygame.key.get_pressed()
+        player.move(user_input)
 
         rem = []
         add_pipe = False
@@ -54,7 +54,7 @@ def main():
             if pipe.x + pipe.width < 0:
                 rem.append(pipe)
 
-            if not pipe.passed and pipe.x < player.x:
+            if not pipe.passed and pipe.x < 300:
                 pipe.passed = True
                 add_pipe = True
             pipe.move()
