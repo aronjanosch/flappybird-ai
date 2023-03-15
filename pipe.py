@@ -21,6 +21,7 @@ class Pipe:
         self.gap = 150
 
         self.passed = False
+        self.scored = False
 
         self.set_height()
 
