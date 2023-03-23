@@ -8,7 +8,7 @@ from pipe import Pipe
 
 pygame.font.init()
 
-FPS = 45
+FPS = 60
 
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -19,6 +19,7 @@ WHITE = (255, 255, 255)
 STAT_FONT = pygame.font.SysFont("comicsansms", 50)
 
 BG_IMG = pygame.transform.scale2x(pygame.image.load(os.path.join("images", "bg.png")))
+
 
 def init():
 
@@ -39,6 +40,32 @@ def draw_window(win: pygame.Surface, player, pipes, score):
     pygame.display.update()
 
 
+def spawn_pipes(pipes, score, player):
+    rem = []
+    add_pipe = False
+    for pipe in pipes:
+        if pipe.x + pipe.width < 0:
+            rem.append(pipe)
+
+        if not pipe.passed and pipe.x < 350:
+            pipe.passed = True
+            add_pipe = True
+
+        if not pipe.scored and pipe.x < player.x and player.alive:
+            pipe.scored = True
+            score += 1
+
+        pipe.move()
+
+    if add_pipe:
+        pipes.append(Pipe(600))
+
+    for r in rem:
+        pipes.remove(r)
+
+    return pipes, score, player
+
+
 def main():
     player = Player(150, 200)
     pipes = [Pipe(700)]
@@ -55,27 +82,8 @@ def main():
         user_input = pygame.key.get_pressed()
         player.move(user_input)
 
-        rem = []
-        add_pipe = False
-        for pipe in pipes:
-            if pipe.x + pipe.width < 0:
-                rem.append(pipe)
+        pipes, score, player = spawn_pipes(pipes, score, player)
 
-            if not pipe.passed and pipe.x < 350:
-                pipe.passed = True
-                add_pipe = True
-
-            if not pipe.scored and pipe.x < player.x:
-                pipe.scored = True
-                score += 1
-
-            pipe.move()
-
-        if add_pipe:
-            pipes.append(Pipe(600))
-
-        for r in rem:
-            pipes.remove(r)
         draw_window(win, player, pipes, score)
     pygame.quit()
     quit()

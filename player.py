@@ -19,6 +19,7 @@ class Player:
         self.vel = 0
         self.height = self.y
         self.flap = False
+        self.alive = True
 
     def jump(self):
         self.flap = True
@@ -38,10 +39,8 @@ class Player:
             if self.vel == -2:
                 self.flap = False
 
-        if user_input[pygame.K_SPACE] and not self.flap and self.y > 0:
+        if user_input[pygame.K_SPACE] and not self.flap and self.y > 0 and self.alive:
             self.jump()
-
-
 
     def draw(self, win):
         """

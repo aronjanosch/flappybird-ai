@@ -20,6 +20,7 @@ class Pipe:
         self.bottom = 0
         self.gap = 150
 
+        self.enter, self.exit = False, False
         self.passed = False
         self.scored = False
 
